@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Эверест — Разработка цифровых решений</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --primary: #000;
+        --secondary: #6c5ce7;
+        --accent: #e17055;
+        --gray: #f5f5f5;
+        --dark: #1a1a2e;
+        --text: #2d3436;
+        --light-text: #636e72;
+        --blue: #007bff;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
+          sans-serif;
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        padding: 1.5rem 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        text-decoration: none;
+      }
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        list-style: none;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text);
+        font-weight: 500;
+      }
+      .hero {
+        margin-top: 80px;
+        padding: 6rem 5%;
+        max-width: 1400px;
+        margin: 80px auto 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+      }
+      .hero h1 {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        line-height: 1.1;
+        margin-bottom: 2rem;
+        font-weight: 700;
+      }
+      .hero-image {
+        width: 100%;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .hero-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .hero-tags {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+      }
+      .tag {
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        background: var(--gray);
+        font-weight: 500;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: all 0.3s;
+      }
+      .tag:hover,
+      .tag.active {
+        background: var(--accent);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .section-title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .portfolio {
+        padding: 4rem 5%;
+        background: var(--gray);
+      }
+      .filters {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 3rem;
+        justify-content: center;
+      }
+      .filter-btn {
+        padding: 0.8rem 1.5rem;
+        border: 2px solid #ddd;
+        background: white;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s;
+      }
+      .filter-btn:hover,
+      .filter-btn.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+      .portfolio-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .portfolio-item {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+      .portfolio-item:hover {
+        transform: translateY(-10px);
+      }
+      .portfolio-image {
+        height: 250px;
+        overflow: hidden;
+      }
+      .portfolio-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .portfolio-content {
+        padding: 2rem;
+      }
+      .portfolio-content h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      .portfolio-content p {
+        color: var(--light-text);
+        line-height: 1.6;
+      }
+      .arrow-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 2px solid var(--primary);
+        margin-top: 1.5rem;
+        cursor: pointer;
+        background: transparent;
+        transition: all 0.3s;
+        font-size: 1.2rem;
+      }
+      .arrow-btn:hover {
+        background: var(--primary);
+        color: white;
+      }
+
+      .case-study {
+        padding: 6rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .case-study-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        margin-bottom: 6rem;
+      }
+      .case-study-grid.reverse {
+        direction: rtl;
+      }
+      .case-study-grid.reverse > * {
+        direction: ltr;
+      }
+      .case-study-image {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      }
+      .case-study-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .case-study-content h2 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+      }
+      .case-study-content p {
+        color: var(--light-text);
+        margin-bottom: 1rem;
+        line-height: 1.8;
+      }
+
+      .branding-showcase {
+        padding: 6rem 5%;
+        background: var(--dark);
+        color: white;
+      }
+      .branding-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 1rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        height: 600px;
+      }
+      .branding-grid img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+      }
+      .branding-grid img:first-child {
+        grid-row: 1 / 3;
+      }
+
+      .icons-section {
+        padding: 6rem 5%;
+        background: var(--blue);
+        color: white;
+      }
+      .icons-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .icons-grid img {
+        width: 100%;
+        border-radius: 15px;
+      }
+
+      .ux-process {
+        padding: 6rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .ux-process-image {
+        width: 100%;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+      }
+      .ux-process-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .medical-cards {
+        padding: 6rem 5%;
+        background: linear-gradient(135deg, #e8f0ff 0%, #f0f4ff 100%);
+      }
+      .medical-cards-image {
+        max-width: 1400px;
+        margin: 0 auto;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .medical-cards-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .dashboard-showcase {
+        padding: 6rem 5%;
+        background: var(--gray);
+      }
+      .dashboard-image {
+        max-width: 1400px;
+        margin: 0 auto 3rem;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      }
+      .dashboard-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .dashboard-screens {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .dashboard-screens img {
+        width: 100%;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .shapes-section {
+        padding: 6rem 5%;
+        background: linear-gradient(135deg, #f0f4ff 0%, #e8f0ff 100%);
+      }
+      .shapes-image {
+        max-width: 1400px;
+        margin: 0 auto;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .shapes-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .team-section {
+        padding: 6rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+      }
+      .team-image {
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .team-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .team-content h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .team-content p {
+        color: var(--light-text);
+        line-height: 1.8;
+        margin-bottom: 1rem;
+      }
+
+      .ratings {
+        padding: 6rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .ratings-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+      }
+      .rating-card {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 2rem;
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        margin-bottom: 1.5rem;
+      }
+      .rating-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--gray);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+      }
+      .video-container {
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      }
+      .video-placeholder {
+        aspect-ratio: 16/10;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+      }
+
+      .clients {
+        padding: 6rem 5%;
+        background: var(--gray);
+      }
+      .clients-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 3rem;
+        max-width: 1400px;
+        margin: 0 auto;
+        align-items: center;
+      }
+      .client-logo {
+        height: 60px;
+        background: white;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: var(--light-text);
+        filter: grayscale(100%);
+        opacity: 0.6;
+        transition: all 0.3s;
+      }
+      .client-logo:hover {
+        filter: grayscale(0%);
+        opacity: 1;
+      }
+
+      .testimonials {
+        padding: 6rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 2rem;
+      }
+      .testimonial-card {
+        background: white;
+        padding: 3rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      }
+      .testimonial-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .testimonial-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+      }
+
+      .services {
+        padding: 6rem 5%;
+        background: var(--dark);
+        color: white;
+      }
+      .services-container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .services h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .services p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+      }
+      .cta-button {
+        display: inline-block;
+        padding: 1.2rem 2.5rem;
+        background: white;
+        color: var(--dark);
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .cta-button:hover {
+        background: transparent;
+        color: white;
+      }
+
+      .contacts {
+        padding: 6rem 5%;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .contacts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+      }
+      .contact-card h3 {
+        font-size: 1rem;
+        color: var(--light-text);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+      }
+      .contact-card p,
+      .contact-card a {
+        font-size: 1.3rem;
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: block;
+      }
+      .contact-button {
+        padding: 1rem 2rem;
+        background: var(--secondary);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        margin-top: 1rem;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      footer {
+        background: var(--dark);
+        color: white;
+        padding: 4rem 5% 2rem;
+      }
+      .footer-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 3rem;
+        margin-bottom: 3rem;
+      }
+      .footer-section h4 {
+        margin-bottom: 1.5rem;
+      }
+      .footer-section ul {
+        list-style: none;
+      }
+      .footer-section ul li {
+        margin-bottom: 0.8rem;
+      }
+      .footer-section a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+      }
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 2rem;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+        .hero,
+        .case-study-grid,
+        .ratings-grid,
+        .team-section {
+          grid-template-columns: 1fr;
+        }
+        .case-study-grid.reverse {
+          direction: ltr;
+        }
+        .branding-grid {
+          grid-template-columns: 1fr;
+          height: auto;
+        }
+        .branding-grid img:first-child {
+          grid-row: auto;
+        }
+        .portfolio-grid,
+        .testimonials-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="#" class="logo">эверест</a>
+      <ul class="nav-links">
+        <li><a href="#cases">Кейсы</a></li>
+        <li><a href="#services">Услуги</a></li>
+        <li><a href="#company">Компания</a></li>
+        <li><a href="#contacts">Контакты</a></li>
+      </ul>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <h1>Разработка цифровых решений с фокусом на User Experience</h1>
+        <div class="hero-tags">
+          <div class="tag active">банков</div>
+          <div class="tag">ритейла</div>
+          <div class="tag">телекома</div>
+          <div class="tag">и других отраслей</div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img
+          src="image/01c08868abb30169ebd0254133440c94d23ff5eb.png"
+          alt="skORO"
+        />
+      </div>
+    </section>
+
+    <section class="portfolio" id="cases">
+      <h2 class="section-title">Наши кейсы</h2>
+      <div class="filters">
+        <button class="filter-btn active" onclick="filterProjects('all')">
+          Все
+        </button>
+        <button class="filter-btn" onclick="filterProjects('web')">Веб</button>
+        <button class="filter-btn" onclick="filterProjects('branding')">
+          Брендинг
+        </button>
+        <button class="filter-btn" onclick="filterProjects('ux')">UX</button>
+      </div>
+      <div class="portfolio-grid">
+        <div class="portfolio-item" data-category="branding">
+          <div class="portfolio-image">
+            <img
+              src="image/0aacd7aa1673e6ab497a568a9b6653a476a99c71.png"
+              alt="skORO"
+            />
+          </div>
+          <div class="portfolio-content">
+            <h3>Айдентика для сервиса skORO</h3>
+            <p>Новый визуальный стиль подчёркивает ценность сервиса.</p>
+            <button class="arrow-btn">→</button>
+          </div>
+        </div>
+        <div class="portfolio-item" data-category="ux web">
+          <div class="portfolio-image">
+            <img
+              src="image/1dadda0cf53b6a3010525afcf3f22af6695b854f.png"
+              alt="Медицина"
+            />
+          </div>
+          <div class="portfolio-content">
+            <h3>Дизайн сайта клиники АО «Медицина»</h3>
+            <p>UX-аудит и реструктуризация ключевых страниц.</p>
+            <button class="arrow-btn">→</button>
+          </div>
+        </div>
+        <div class="portfolio-item" data-category="branding">
+          <div class="portfolio-image">
+            <img
+              src="image/3d8bc2248333082ea6007162c40d622c14cbbf1d.png"
+              alt="ATMEX"
+            />
+          </div>
+          <div class="portfolio-content">
+            <h3>Редизайн для ATMEX</h3>
+            <p>Обновили фирменный стиль и логотип.</p>
+            <button class="arrow-btn">→</button>
+          </div>
+        </div>
+        <div class="portfolio-item" data-category="web">
+          <div class="portfolio-image">
+            <img
+              src="image/4e71cf895b7e0188fea9baab879cc097b3cdd3f3.png"
+              alt="Агами"
+            />
+          </div>
+          <div class="portfolio-content">
+            <h3>Сайт клиники Агами</h3>
+            <p>Проработали пользовательские сценарии.</p>
+            <button class="arrow-btn">→</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="case-study">
+      <div class="case-study-grid">
+        <div class="case-study-image">
+          <img
+            src="image/5b32e7932ba39412d07d2ea94ffa98d89125e18d.png"
+            alt="skORO App"
+          />
+        </div>
+        <div class="case-study-content">
+          <h2>skORO — сервис онлайн-опросов</h2>
+          <p>
+            Разработали айдентику и цифровой продукт для сервиса онлайн-опросов.
+            Фиолетовая сетка стала ключевым визуальным элементом бренда.
+          </p>
+          <p>
+            Создали узнаваемый стиль, который работает как в digital, так и в
+            офлайн-среде.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="branding-showcase">
+      <h2 class="section-title" style="color: white">Брендинг skORO в жизни</h2>
+      <div class="branding-grid">
+        <img
+          src="image/7d33f6f58554926efc72fba5f16075697adf5658.png"
+          alt="Вывеска"
+        />
+        <img
+          src="image/7eee78ccee1e9d8b55a07dfc4579c9e7fc37b346.png"
+          alt="Бирка"
+        />
+        <img
+          src="image/8bd80a63dca46a23169d16322e4f6cf9a7b3adb4.png"
+          alt="Бейдж"
+        />
+      </div>
+    </section>
+
+    <section class="ux-process">
+      <h2 class="section-title">UX-исследования и проектирование</h2>
+      <div class="ux-process-image">
+        <img
+          src="image/8ee10addcf06fb8c2e049e5b5699b45f46f729c5.png"
+          alt="UX Process"
+        />
+      </div>
+    </section>
+
+    <section class="team-section">
+      <div class="team-image">
+        <img
+          src="image/9c60e7b8c61376efc27affd3ea46e2870dbc4332.png"
+          alt="Дизайнер"
+        />
+      </div>
+      <div class="team-content">
+        <h2>Исследуем, проектируем, создаём</h2>
+        <p>
+          Наша команда проводит глубокие UX-исследования, создаёт прототипы и
+          тестирует решения с реальными пользователями.
+        </p>
+        <p>
+          Каждый проект начинается с понимания потребностей бизнеса и
+          пользователей.
+        </p>
+      </div>
+    </section>
+
+    <section class="medical-cards">
+      <h2 class="section-title">Медицинские сервисы</h2>
+      <div class="medical-cards-image">
+        <img
+          src="image/ec217e56731814494796f9b4c22359eeebf112c9.png"
+          alt="Медицинские карточки"
+        />
+      </div>
+    </section>
+
+    <section class="icons-section">
+      <h2 class="section-title" style="color: white">Иконки и UI-элементы</h2>
+      <div class="icons-grid">
+        <img
+          src="image/22ded8b6fa432a2467eeafdc182a60c3159babea.png"
+          alt="Иконки"
+        />
+      </div>
+    </section>
+
+    <section class="shapes-section">
+      <h2 class="section-title">3D-элементы и визуальный язык</h2>
+      <div class="shapes-image">
+        <img
+          src="image/34c9c5bc8a289068d7857a6eb0403c69055f184a.png"
+          alt="3D Shapes"
+        />
+      </div>
+    </section>
+
+    <section class="dashboard-showcase">
+      <h2 class="section-title">Sminex — личный кабинет жильца</h2>
+      <div class="dashboard-image">
+        <img
+          src="image/8ee10addcf06fb8c2e049e5b5699b45f46f729c5.png"
+          alt="Sminex Dashboard"
+        />
+      </div>
+    </section>
+
+    <section class="ratings" id="company">
+      <h2 class="section-title">
+        Входим в десятку лучших дизайн-студий России
+      </h2>
+      <div class="ratings-grid">
+        <div>
+          <div class="rating-card">
+            <div class="rating-icon">👆</div>
+            <div>
+              <h3>Рейтинг Рунета</h3>
+              <p>6 место</p>
+            </div>
+          </div>
+          <div class="rating-card">
+            <div class="rating-icon" style="background: #ffeaa7">🏷️</div>
+            <div>
+              <h3>Tagline</h3>
+              <p>16 место</p>
+            </div>
+          </div>
+        </div>
+        <div class="video-container">
+          <div class="video-placeholder">▶</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="clients">
+      <h2 class="section-title">Нам доверяют</h2>
+      <div class="clients-grid">
+        <div class="client-logo">РСХБ</div>
+        <div class="client-logo">ПСБ</div>
+        <div class="client-logo">СБЕР</div>
+        <div class="client-logo">ГАЗПРОМ</div>
+        <div class="client-logo">МТС</div>
+        <div class="client-logo">KFC</div>
+        <div class="client-logo">BMW</div>
+        <div class="client-logo">SCANIA</div>
+      </div>
+    </section>
+
+    <section class="testimonials">
+      <h2 class="section-title">Отзывы клиентов</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div class="testimonial-avatar">СЕ</div>
+            <div>
+              <h4>Сучилина Екатерина</h4>
+              <p style="color: var(--light-text)">Ингосстрах</p>
+            </div>
+          </div>
+          <p>
+            Профессионализм команды и применение лучших практик позволили
+            разработать удобный интерфейс.
+          </p>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-header">
+            <div
+              class="testimonial-avatar"
+              style="
+                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+              "
+            >
+              КИ
+            </div>
+            <div>
+              <h4>Краснолуцкий Игорь</h4>
+              <p style="color: var(--light-text)">GMS</p>
+            </div>
+          </div>
+          <p>
+            Высокий уровень сервиса и профессионализм. Коммуникация была
+            комфортной и лёгкой.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="services" id="services">
+      <div class="services-container">
+        <h2>Аутсорсинг UX-экспертизы</h2>
+        <p>Аналитика, UX/UI-дизайн и фронтенд для системных интеграторов</p>
+        <a href="#contacts" class="cta-button">Связаться с нами</a>
+      </div>
+    </section>
+
+    <section class="contacts" id="contacts">
+      <h2 class="section-title">Контакты</h2>
+      <div class="contacts-grid">
+        <div class="contact-card">
+          <h3>Пишите</h3>
+          <a href="mailto:sales@everest.cx">sales@everest.cx</a>
+          <button class="contact-button">Обсудить проект</button>
+        </div>
+        <div class="contact-card">
+          <h3>Звоните</h3>
+          <a href="tel:+749541414">+7 495 414 14</a>
+        </div>
+        <div class="contact-card">
+          <h3>Москва</h3>
+          <p>Пресненская наб., 8с1, 58 этаж</p>
+        </div>
+        <div class="contact-card">
+          <h3>Тамбов</h3>
+          <p>Максима Горького, 17</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <ul>
+            <li><a href="#cases">Кейсы</a></li>
+            <li><a href="#services">Услуги</a></li>
+            <li><a href="#company">О компании</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Контакты</h4>
+          <a href="mailto:sales@everest.cx">sales@everest.cx</a>
+          <a href="tel:+749541414">+7 495 414 14</a>
+        </div>
+        <div class="footer-section">
+          <h4>Соцсети</h4>
+          <a href="#">Telegram</a><br />
+          <a href="#">VK</a><br />
+          <a href="#">YouTube</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 Эверест</p>
+      </div>
+    </footer>
+
+    <script>
+      function filterProjects(category) {
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        event.target.classList.add("active");
+        document.querySelectorAll(".portfolio-item").forEach((item) => {
+          item.style.display =
+            category === "all" || item.dataset.category.includes(category)
+              ? "block"
+              : "none";
+        });
+      }
+      document.querySelectorAll(".tag").forEach((tag) => {
+        tag.addEventListener("click", function () {
+          document
+            .querySelectorAll(".tag")
+            .forEach((t) => t.classList.remove("active"));
+          this.classList.add("active");
+        });
+      });
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document
+            .querySelector(this.getAttribute("href"))
+            ?.scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    </script>
+  </body>
+</html>
